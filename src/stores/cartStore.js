@@ -7,6 +7,7 @@ export const useCartStore = create(
     (set, get) => ({
       cartItems: [],
       cartItemCount: 0,
+      currentUserId: null,
       isLoading: false,
       error: null,
 
@@ -18,8 +19,14 @@ export const useCartStore = create(
       // 장바구니 데이터 로드
       loadCartItems: async (userId) => {
         if (!userId) return;
+        
+        const { currentUserId } = get();
+        // 다른 사용자로 로그인한 경우 장바구니 초기화
+        if (currentUserId && currentUserId !== userId) {
+          set({ cartItems: [], cartItemCount: 0 });
+        }
 
-        set({ isLoading: true, error: null });
+        set({ isLoading: true, error: null, currentUserId: userId });
         try {
           const items = await fetchCartItems(userId);
           set({
@@ -91,6 +98,11 @@ export const useCartStore = create(
       clearCart: () => {
         set({ cartItems: [], cartItemCount: 0 });
       },
+      
+      // 사용자 로그아웃 시 장바구니 초기화
+      resetCart: () => {
+        set({ cartItems: [], cartItemCount: 0, currentUserId: null });
+      },
 
       // 장바구니 새로고침
       refreshCart: async (userId) => {
@@ -102,6 +114,7 @@ export const useCartStore = create(
       partialize: (state) => ({
         cartItems: state.cartItems,
         cartItemCount: state.cartItemCount,
+        currentUserId: state.currentUserId,
       }),
     }
   )

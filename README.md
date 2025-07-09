@@ -73,3 +73,5 @@ Vite, React, Tailwind CSS를 기반으로 실제 동작하는 커뮤니티 웹 �
   - `.env` 파일을 이용해 개발/프로덕션 환경 변수 분리
   - GitHub 저장소와 Vercel을 연동하여 CI/CD 파이프라인 구축
   - 원클릭으로 실제 웹에 프로젝트 배포 및 공유
+
+test

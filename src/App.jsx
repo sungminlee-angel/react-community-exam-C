@@ -7,6 +7,14 @@ import { useUserStore } from "./stores/userStore";
 
 function App() {
   useEffect(() => {
+    // 초기 세션 확인
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        useUserStore.getState().setUser(session.user);
+      }
+    });
+
+    // 인증 상태 변화 감지
     supabase.auth.onAuthStateChange((event, session) => {
       if (session?.user) {
         useUserStore.getState().setUser(session.user);
